@@ -1,13 +1,38 @@
-import React from "react";
+import React, { useContext, useRef } from "react";
+import { PostList } from "../store/PostListStore";
 
 const CreatePost = () => {
+  const {addPost} = useContext(PostList)
+  const userIdElement = useRef()
+  const postTitleElement = useRef()
+  const postBodyElement = useRef()
+  const reactionsElement = useRef()
+  const tagsElement = useRef()
+
+  function handleSubmit(event){
+event.preventDefault()
+const userId = userIdElement.current.value;
+const postTitle = postTitleElement.current.value;
+const postBody = postBodyElement.current.value;
+const reactions = reactionsElement.current.value;
+const tags = tagsElement.current.value.split(" ");
+
+
+userIdElement.current.value="";
+postTitleElement.current.value="";
+postBodyElement.current.value="";
+reactionsElement.current.value="";
+tagsElement.current.value=""
+addPost(userId,postTitle,postBody,reactions,tags)
+
+  }
   return (
-    <form className="create-post">
+    <form className="create-post" onSubmit={handleSubmit}>
        <div className="mb-3">
         <label htmlFor="userId" className="form-label">
       Enter Your User Id
         </label>
-        <input
+        <input ref={userIdElement}
           type="text"
           className="form-control"
           id="userId" placeholder="Your user Id"
@@ -18,7 +43,7 @@ const CreatePost = () => {
         <label htmlFor="title" className="form-label">
           Post Title
         </label>
-        <input
+        <input ref={postTitleElement}
           type="text"
           className="form-control"
           id="title" placeholder="Share your think.."
@@ -29,7 +54,7 @@ const CreatePost = () => {
         <label htmlFor="body" className="form-label">
           Post Content
         </label>
-        <textarea rows={4}
+        <textarea rows={4}  ref={postBodyElement}
           type="text"
           className="form-control"
           id="title" placeholder="Tell us more about it.."
@@ -40,7 +65,7 @@ const CreatePost = () => {
         <label htmlFor="reactions" className="form-label">
           Number of Reactions
         </label>
-        <input
+        <input  ref={reactionsElement}
           type="text"
           className="form-control"
           id="reactions" placeholder="How many people reacted to this post"
@@ -52,7 +77,7 @@ const CreatePost = () => {
         <label htmlFor="tags" className="form-label">
           Enter hastags here
         </label>
-        <input
+        <input   ref={tagsElement}
           type="text"
           className="form-control"
           id="tags" placeholder="use tags by space"
